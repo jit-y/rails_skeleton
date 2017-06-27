@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 20170424123257) do
 
   create_table "article_tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "article_id", null: false
-    t.integer  "tag_id",     null: false
+    t.bigint  "article_id", null: false
+    t.bigint  "tag_id",     null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_article_tags_on_article_id", using: :btree
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20170424123257) do
   end
 
   create_table "articles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "genre_id",                 null: false
+    t.bigint  "genre_id",                 null: false
     t.string   "title",                    null: false
     t.text     "content",    limit: 65535, null: false
     t.datetime "created_at",               null: false

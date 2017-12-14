@@ -1,0 +1,52 @@
+version: '2'
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  bundle_install_data:
+    driver: local
+services:
+  data_store:
+    image: busybox
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - redis_data:/data
+      - bundle_install_data:/home/foo/workspace/vendor/bundle
+  mysql:
+    image: mysql:5.6
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=root
+      - MYSQL_ROOT_PASSWORD=""
+    volumes_from:
+      - data_store
+  rails:
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    ports:
+      - "3000:3000"
+    command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    networks:
+      - default
+    volumes:
+      - .:/app
+    volumes_from:
+      - data_store
+  redis:
+    image: redis:3
+    ports:
+      - "6379:6379"
+    volumes_from:
+      - data_store
+  memcached:
+    image: memcached:1.5-alpine
+    ports:
+      - "11211:11211"
+

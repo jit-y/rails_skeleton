@@ -1,19 +1,14 @@
 FROM ruby:2.4.1
 
-RUN gem install bundler -v 1.5.0
-
-RUN useradd foo -u 3333 -d /home/ && \
+RUN useradd -m foo -u 3333 && \
     mkdir -p /home/foo/workspace && \
-    chown foo.foo -R /home/foo
-
-WORKDIR /home/foo/workspace
-
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
+    chown foo.foo -R /home/foo/workspace
 
 USER root
 
-RUN ["bundle", "install", "--path", "vendor/bundle", "-j2"]
+RUN gem install bundler -v 1.5.0
+
+WORKDIR /home/foo/workspace
 
 COPY . /home/foo/workspace
 

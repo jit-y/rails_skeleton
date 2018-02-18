@@ -19,7 +19,8 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_DATABASE=root
-      - MYSQL_ROOT_PASSWORD=""
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes_from:
       - data_store
   rails:
@@ -39,6 +40,8 @@ services:
       - .:/app
     volumes_from:
       - data_store
+    environment:
+      - RESET_DB=true
   redis:
     image: redis:3
     ports:

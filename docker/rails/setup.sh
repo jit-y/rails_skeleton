@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-echo $(pwd)
+bundle install --path vendor/bundle -j2
 
-if [ "$RESET_DB" == 'true' ]; then
+if [ "$RESET_DB" = "true" ]; then
   bundle exec rails db:migrate:reset db:seed
 fi
 
